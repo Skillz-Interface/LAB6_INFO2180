@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
+		<link href="style.css" type="text/css" rel="stylesheet">
 		<script>
 		
 			function Definition(aSearch)
@@ -49,16 +51,19 @@
 
 	<body>
 		<h1> Definition </h1>
-		<div class="container">
-            <div id="searchArea">
-            	<form>
+		<div id="header">Web Terms Dictionary</div>
+			<div class="container">
+	            <div id="searchArea">
+	            	<form>
 
-            	<input type="text" id="queryTxtBox" autofocus >
-				<input type="button" id="btnSearch" value="Search" onclick="Definition(true)" >
+		            	<input type="text" id="queryTxtBox" autofocus >
+						<input type="button" id="btnSearch" value="Search" onclick="Definition(true)" >
 
-				</form>
+					</form>
 
+				</div>
 			</div>
-		</div>
+		<br>
+		<div id = "result"></div>
 	</body>
 </html>
