@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+		
+			function Definition(aSearch)
+		{
+			    var query = document.getElementById("queryTxtBox").value.toLowerCase();
+			    var xhttp = new XMLHttpRequest();
+			    var ajaxDisplay = xhttp.responseText;
+			    xhttp.onreadystatechange = function()
+			    
+			    {
+			        if (this.readyState == 4 && this.status == 200) 
+			        {
+			        	console.log("help");
+			        	Search(this,query);
+			        
+			        	
+			        
+			        	 
+			            
+			        }
+    			};
+		    xhttp.open("GET", "request.php?q="+query, true);
+		    xhttp.send();
+		    
+		    
+		}
+		
+		function Search(xml,query){
+			var res = xml.responseText;
+			var initial = res.indexOf("<p>");
+			initial = initial + 1;
+			var end = res.indexOf("</p>");
+			end = end + 1;
+			res = res.substring(initial,end);
+			var op = res.indexOf(">");
+			op = op + 1;
+			var clo = res.indexOf("<");
+			alert(res.substring(op,clo));
+			
+		}
+		
+
+			    
+	 	</script>
+	</head>
+
+	<body>
+		<h1> Definition </h1>
+		<div class="container">
+            <div id="searchArea">
+            	<form>
+
+            	<input type="text" id="queryTxtBox" autofocus >
+				<input type="button" id="btnSearch" value="Search" onclick="Definition(true)" >
+
+				</form>
+
+			</div>
+		</div>
+	</body>
+</html>
