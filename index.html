@@ -1,48 +1,69 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/>
+		
 		<link href="style.css" type="text/css" rel="stylesheet">
 		<script>
+				
 		
-			function Definition(aSearch)
-		{
-			    var query = document.getElementById("queryTxtBox").value.toLowerCase();
-			    var xhttp = new XMLHttpRequest();
-			    var ajaxDisplay = xhttp.responseText;
-			    xhttp.onreadystatechange = function()
-			    
-			    {
-			        if (this.readyState == 4 && this.status == 200) 
-			        {
-			        	console.log("help");
-			        	Search(this,query);
-			        
-			        	
-			        
-			        	 
-			            
-			        }
-    			};
-		    xhttp.open("GET", "request.php?q="+query, true);
-		    xhttp.send();
-		    
-		    
-		}
+	function loadDefinitions(allSearch)
+{
+    var query = document.getElementById("queryTxtBox").value.toLowerCase();
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() 
+    {
+        if (this.readyState == 4 && this.status == 200) 
+        {
+            parseXMLData(this, allSearch, query);
+        }
+    };
+    xhttp.open("GET", "request.php", true);
+    xhttp.send();
+}
+
+function parseXMLData(xml, allSearch, query) 
+{
+    var i;
+    var xmlDoc = xml.responseXML;
+    var allDef="<ol>";
+    var x = xmlDoc.getElementsByTagName("definition");
+    var notFound = true;
+    
+    if (allSearch) // Returns all definitions
+    {
+        for (i = 0; i <x.length; i++) 
+        { 
+            allDef += "<li>" + "<h3>" + x[i].getAttributeNode("name").value + "</h3>" + // prints the name attribute of the definition
+            "<p>" + x[i].childNodes[0].nodeValue + "</p>" +                             // prints the definition of the word
+            "<p> - " + x[i].getAttributeNode("author").value + "</p>" +                 // prints the name attribute of the definition
+            "</li>";  
+        }
+        allDef += "</ol>";
+        document.getElementById("result").innerHTML = allDef;
+    }
+    else // Returns only a single entry
+    {
+        for (i = 0; i <x.length; i++) 
+        { 
+            if (x[i].getAttributeNode("name").value.toLowerCase() == query)
+            {
+                document.getElementById("result").innerHTML  = "<ol><li>" + "<h3>" + x[i].getAttributeNode("name").value + "</h3>" + 
+                "<p>" + x[i].childNodes[0].nodeValue + "</p>" +                             
+                "<p> - " + x[i].getAttributeNode("author").value + "</p>" +                 
+                "</li></ol>";
+                notFound = false;
+                break;
+            }
+            
+        }
+        
+        if(notFound) // No results found
+        {
+            document.getElementById("result").innerHTML  = "<h3>No Results found for: '" + query + "'</h3>";
+        }
+    }
+}
 		
-		function Search(xml,query){
-			var res = xml.responseText;
-			var initial = res.indexOf("<p>");
-			initial = initial + 1;
-			var end = res.indexOf("</p>");
-			end = end + 1;
-			res = res.substring(initial,end);
-			var op = res.indexOf(">");
-			op = op + 1;
-			var clo = res.indexOf("<");
-			alert(res.substring(op,clo));
-			
-		}
 		
 
 			    
